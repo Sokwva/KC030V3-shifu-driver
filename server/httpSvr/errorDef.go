@@ -1,4 +1,4 @@
-package server
+package httpSvr
 
 const (
 	SUCCESS             = 0
