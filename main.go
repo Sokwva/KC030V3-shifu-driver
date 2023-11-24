@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"sokwva/KC030V3-shifu-driver/server/httpSvr"
+	"sokwva/KC030V3-shifu-driver/server/mqtt"
 
 	"github.com/urfave/cli/v2"
 )
@@ -23,6 +24,10 @@ var (
 )
 
 func main() {
+	initCli()
+}
+
+func initCli() {
 	cliApp := &cli.App{
 		Name:  "KC030V3-shifu-driver",
 		Usage: "KC030V3-shifu-driver [options]",
@@ -84,11 +89,12 @@ func main() {
 		},
 		Action: func(ctx *cli.Context) error {
 			if serverType == "http" {
-				httpSvr.ServeSetParam(target, healthCheck, enviroment)
+				httpSvr.SetParam(target, healthCheck, enviroment)
 				httpSvr.Serve()
 			}
 			if serverType == "mqtt" {
-				panic("imple me")
+				mqtt.SetParam(target, healthCheck, enviroment, mqttAddr, mqttUser, mqttPass, mqttParentTopicPath, mqttName)
+				mqtt.Serve()
 			}
 			return nil
 		},

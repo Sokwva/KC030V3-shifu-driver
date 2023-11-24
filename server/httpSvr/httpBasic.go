@@ -163,7 +163,7 @@ func checkHealthy() {
 	}
 }
 
-func ServeSetParam(targetExt string, healthCheckExt string, enviromentExt string) {
+func SetParam(targetExt string, healthCheckExt string, enviromentExt string) {
 	target = targetExt
 	healthCheck = healthCheckExt
 	enviroment = enviromentExt
