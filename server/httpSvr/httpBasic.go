@@ -92,24 +92,24 @@ func singoleBtnAction(c *gin.Context, act string) {
 		return
 	}
 	queryCmd := &serializer.PacketStruct{
-		Header:   "ClientToServer",
+		Header:   "ServerToClient",
 		Type:     act,
 		ButtonNo: uint(btnNum) - 1,
 		Value:    []byte{},
 		CheckSum: 0,
-		Tail:     "ClientToServer",
+		Tail:     "ServerToClient",
 	}
 	commonTail(queryCmd, c)
 }
 
 func allBtnAction(c *gin.Context, act string) {
 	queryCmd := &serializer.PacketStruct{
-		Header:   "ClientToServer",
+		Header:   "ServerToClient",
 		Type:     act,
 		ButtonNo: 0,
 		Value:    []byte{},
 		CheckSum: 0,
-		Tail:     "ClientToServer",
+		Tail:     "ServerToClient",
 	}
 	commonTail(queryCmd, c)
 }

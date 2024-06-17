@@ -7,18 +7,19 @@ import (
 
 const (
 	//byte
-	MaxSize      = 20
-	HeaderSize   = 1
-	TypeSize     = 1
-	BtnNumSize   = 1
-	ValueSize    = 15
-	ChecksumSize = 1
-	TailSize     = 1
+	SinglePkgMaxSize = 20
+	MaxSize          = 100
+	HeaderSize       = 1
+	TypeSize         = 1
+	BtnNumSize       = 1
+	ValueSize        = 15
+	ChecksumSize     = 1
+	TailSize         = 1
 )
 
 const (
 	//0xAA
-	HeaderSvrToClientBin = 0b10100000
+	HeaderSvrToClientBin = 0b10101010
 	//0xCC
 	HeaderClientToSvrBin = 0b11001100
 	//0xBB
@@ -99,7 +100,7 @@ func (me *RawPacketStruct) Marshal() []byte {
 func (me *RawPacketStruct) UnMarshal(raw []byte) error {
 	me.Lock()
 	defer me.Unlock()
-	if len(raw) != MaxSize {
+	if len(raw) > SinglePkgMaxSize {
 		return errors.New("raw packet size error")
 	}
 	index := 0
@@ -122,7 +123,7 @@ func (me *PacketStruct) ParsePacket(raw *RawPacketStruct) {
 	me.Lock()
 	defer me.Unlock()
 
-	if raw.Header == byte(HeaderClientToSvrBin) {
+	if raw.Header == HeaderClientToSvrBin {
 		me.Header = "ClientToServer"
 	} else if raw.Header == HeaderSvrToClientBin {
 		me.Header = "ServerToClient"
@@ -146,7 +147,7 @@ func (me *PacketStruct) ParsePacket(raw *RawPacketStruct) {
 	me.Value = raw.Value
 	me.CheckSum = raw.CheckSum
 
-	if raw.Header == byte(TailClientToSvrBin) {
+	if raw.Header == TailClientToSvrBin {
 		me.Tail = "ClientToServer"
 	} else if raw.Header == TailSvrToClientBin {
 		me.Tail = "ServerToClient"
@@ -159,7 +160,7 @@ func (me *PacketStruct) UnParsePacket(data *RawPacketStruct) {
 	defer me.Unlock()
 
 	if me.Header == "ClientToServer" {
-		data.Header = byte(HeaderClientToSvrBin)
+		data.Header = HeaderClientToSvrBin
 	} else if me.Header == "ServerToClient" {
 		data.Header = HeaderSvrToClientBin
 	}
@@ -183,7 +184,7 @@ func (me *PacketStruct) UnParsePacket(data *RawPacketStruct) {
 	data.CheckSum = me.CheckSum
 
 	if me.Tail == "ClientToServer" {
-		data.Header = byte(TailClientToSvrBin)
+		data.Header = TailClientToSvrBin
 	} else if me.Tail == "ServerToClient" {
 		data.Header = TailSvrToClientBin
 	}
