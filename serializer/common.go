@@ -3,7 +3,6 @@ package serializer
 import (
 	"errors"
 	"sokwva/KC030V3-shifu-driver/utils"
-	"sync"
 )
 
 const (
@@ -64,7 +63,6 @@ const (
 //	C->Svr:                                                                                              C->Svr:
 //	 0xCC                                                                                                 0xDD
 type RawPacketStruct struct {
-	sync.RWMutex
 	Header   byte
 	Type     byte
 	ButtonNo byte
@@ -74,7 +72,6 @@ type RawPacketStruct struct {
 }
 
 type PacketStruct struct {
-	sync.RWMutex
 	Header   string
 	Type     string
 	ButtonNo uint
@@ -85,9 +82,7 @@ type PacketStruct struct {
 
 // Struct to packet
 func (me *RawPacketStruct) Marshal() []byte {
-	me.Lock()
 	utils.Log.Debug("start to Marshal RawPacketStruct", "raw", me)
-	defer me.Unlock()
 	packet := make([]byte, MaxSize)
 	packet = append(packet, me.Header)
 	packet = append(packet, me.Type)
@@ -101,9 +96,7 @@ func (me *RawPacketStruct) Marshal() []byte {
 
 // Packet to Struct
 func (me *RawPacketStruct) UnMarshal(raw []byte) error {
-	me.Lock()
 	utils.Log.Debug("start to UnMarshal RawPacketStruct", "raw", raw)
-	defer me.Unlock()
 	if len(raw) > SinglePkgMaxSize {
 		return errors.New("raw packet size error")
 	}
@@ -124,9 +117,7 @@ func (me *RawPacketStruct) UnMarshal(raw []byte) error {
 }
 
 func (me *PacketStruct) ParsePacket(raw *RawPacketStruct) {
-	me.Lock()
 	utils.Log.Debug("start to ParsePacket PacketStruct ", "raw", raw)
-	defer me.Unlock()
 
 	if raw.Header == HeaderClientToSvrBin {
 		me.Header = "ClientToServer"
@@ -161,9 +152,7 @@ func (me *PacketStruct) ParsePacket(raw *RawPacketStruct) {
 }
 
 func (me *PacketStruct) UnParsePacket(data *RawPacketStruct) {
-	me.Lock()
 	utils.Log.Debug("start to UnParsePacket PacketStruct ", "struct", me)
-	defer me.Unlock()
 
 	if me.Header == "ClientToServer" {
 		data.Header = HeaderClientToSvrBin
