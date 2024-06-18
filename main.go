@@ -5,6 +5,7 @@ import (
 	"os"
 	"sokwva/KC030V3-shifu-driver/server/httpSvr"
 	"sokwva/KC030V3-shifu-driver/server/mqtt"
+	"sokwva/KC030V3-shifu-driver/utils"
 
 	"github.com/urfave/cli/v2"
 )
@@ -21,6 +22,7 @@ var (
 	mqttPass            string = ""
 	mqttName            string = ""
 	mqttParentTopicPath string = ""
+	logLevel            string = ""
 )
 
 func main() {
@@ -86,8 +88,15 @@ func initCli() {
 				Usage:       "mqtt parent topic path",
 				Destination: &mqttParentTopicPath,
 			},
+			&cli.StringFlag{
+				Name:        "logLevel",
+				Value:       "error",
+				Usage:       "log level",
+				Destination: &logLevel,
+			},
 		},
 		Action: func(ctx *cli.Context) error {
+			utils.InitLogger(logLevel)
 			if serverType == "http" {
 				httpSvr.SetParam(target, healthCheck, enviroment)
 				httpSvr.Serve()
