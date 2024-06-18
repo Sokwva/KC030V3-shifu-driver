@@ -2,7 +2,6 @@ package mqtt
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"sokwva/KC030V3-shifu-driver/client"
 	"sokwva/KC030V3-shifu-driver/serializer"
@@ -121,7 +120,8 @@ func EventHandler(ctx mqttDrv.Client, msg mqttDrv.Message) {
 	//cmd: get close open
 	//target(generally relay number):0->all,1-5->relay number,<empty>->query
 	utils.Log.Debug("event", "from-topic", string(msg.Topic()), "payload:", string(msg.Payload()))
-	if len(msg.Payload()) == 0 {
+	if len(msg.Payload()) == 0 || len(msg.Payload()) > 10 {
+		utils.Log.Info("event ignore invalid length message")
 		return
 	}
 	cmds := strings.Split(string(msg.Payload()), " ")
@@ -154,7 +154,7 @@ func EventHandler(ctx mqttDrv.Client, msg mqttDrv.Message) {
 			commonAction("AllClose", cmds, msg)
 			return
 		}
-		commonAction("AllClose", cmds, msg)
+		commonAction("SingleClose", cmds, msg)
 	case "open":
 		if cmds[1] == "" {
 			Pub(string(msg.Payload()) + " param button number(param 2) is empty.")
@@ -170,13 +170,13 @@ func EventHandler(ctx mqttDrv.Client, msg mqttDrv.Message) {
 func checkHealthy() {
 	timer := time.NewTicker(time.Second * 10)
 	for {
-		fmt.Println("checking...")
+		utils.Log.Info("checking...")
 		<-timer.C
 		if utils.ProbeTCP(target) {
 			continue
 		} else {
 			if enviroment == "host" {
-				fmt.Println("device is not healthy.")
+				utils.Log.Info("device is not healthy.")
 				Pub("device " + target + " is unhealthy.")
 			}
 			if enviroment == "container" {

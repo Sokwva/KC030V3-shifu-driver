@@ -1,7 +1,6 @@
 package httpSvr
 
 import (
-	"fmt"
 	"net/http"
 	"sokwva/KC030V3-shifu-driver/client"
 	"sokwva/KC030V3-shifu-driver/serializer"
@@ -157,7 +156,7 @@ func checkHealthy() {
 			}
 			if enviroment == "host" {
 				//主机环境下可以直接打印错误信息
-				fmt.Println("device is not healthy")
+				utils.Log.Info("device is not healthy")
 			}
 		}
 	}
