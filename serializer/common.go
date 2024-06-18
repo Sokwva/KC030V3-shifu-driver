@@ -85,12 +85,14 @@ func (me *RawPacketStruct) Marshal() []byte {
 	utils.Log.Debug("start to Marshal RawPacketStruct", "raw", me)
 	packet := make([]byte, SinglePkgMaxSize)
 	packet = append(packet, me.Header)
+	utils.Log.Debug("raw", "head", me.Header)
 	packet = append(packet, me.Type)
+	utils.Log.Debug("raw", "type", me.Type)
 	packet = append(packet, me.ButtonNo)
 	packet = append(packet, me.Value...)
 	packet = append(packet, me.CheckSum)
 	packet = append(packet, me.Tail)
-	utils.Log.Debug("Marshal RawPacketStruct done", "raw", packet)
+	utils.Log.Debug("Marshal RawPacketStruct done", "raw", packet, "length", len(packet))
 	return packet
 }
 
