@@ -2,7 +2,6 @@ package client
 
 import (
 	"net"
-	"slices"
 	"time"
 )
 
@@ -14,7 +13,7 @@ func Send(target string, cmd []byte) ([]byte, error) {
 	}
 	defer tcpConn.Close()
 
-	slices.Reverse(cmd)
+	// slices.Reverse(cmd)
 	tcpConn.Write(cmd)
 	var buf []byte = make([]byte, 20)
 	_, err = tcpConn.Read(buf)
