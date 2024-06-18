@@ -97,7 +97,7 @@ func commonAction(baseicCmd string, cmds []string, msg mqttDrv.Message) {
 	queryCmd := &serializer.PacketStruct{
 		Header:   "ServerToClient",
 		Type:     baseicCmd,
-		ButtonNo: uint(btnNum) + 1,
+		ButtonNo: uint(btnNum) - 1,
 		Value:    []byte{},
 		CheckSum: 0,
 		Tail:     "ServerToClient",
