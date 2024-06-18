@@ -96,12 +96,12 @@ func commonAction(baseicCmd string, cmds []string, msg mqttDrv.Message) {
 		Pub(string(msg.Payload()) + " param button number(param 2) is not valid uint.")
 	}
 	queryCmd := &serializer.PacketStruct{
-		Header:   "ClientToServer",
+		Header:   "ServerToClient",
 		Type:     baseicCmd,
 		ButtonNo: uint(btnNum),
 		Value:    []byte{},
 		CheckSum: 0,
-		Tail:     "ClientToServer",
+		Tail:     "ServerToClient",
 	}
 	resp := commonBody(queryCmd, msg)
 	status, err := serializer.ActionAllRespParse(resp.Value)
