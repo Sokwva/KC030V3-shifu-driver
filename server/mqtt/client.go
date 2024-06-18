@@ -120,7 +120,7 @@ func EventHandler(ctx mqttDrv.Client, msg mqttDrv.Message) {
 	//common command: [cmd] [target]
 	//cmd: get close open
 	//target(generally relay number):0->all,1-5->relay number,<empty>->query
-	// fmt.Println(string(msg.Topic()), string(msg.Payload()))
+	utils.Log.Debug("event", "from-topic", string(msg.Topic()), "payload:", string(msg.Payload()))
 	if len(msg.Payload()) == 0 {
 		return
 	}
