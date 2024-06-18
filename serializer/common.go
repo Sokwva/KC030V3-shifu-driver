@@ -152,9 +152,9 @@ func (me *PacketStruct) ParsePacket(raw *RawPacketStruct) {
 	me.Value = raw.Value
 	me.CheckSum = raw.CheckSum
 
-	if raw.Header == TailClientToSvrBin {
+	if raw.Tail == TailClientToSvrBin {
 		me.Tail = "ClientToServer"
-	} else if raw.Header == TailSvrToClientBin {
+	} else if raw.Tail == TailSvrToClientBin {
 		me.Tail = "ServerToClient"
 	}
 	utils.Log.Debug("ParsePacket PacketStruct done", "struct", me)
@@ -190,9 +190,9 @@ func (me *PacketStruct) UnParsePacket(data *RawPacketStruct) {
 	data.CheckSum = me.CheckSum
 
 	if me.Tail == "ClientToServer" {
-		data.Header = TailClientToSvrBin
+		data.Tail = TailClientToSvrBin
 	} else if me.Tail == "ServerToClient" {
-		data.Header = TailSvrToClientBin
+		data.Tail = TailSvrToClientBin
 	}
 	utils.Log.Debug("UnParsePacket PacketStruct done", "data", data)
 }
