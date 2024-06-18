@@ -83,7 +83,7 @@ type PacketStruct struct {
 // Struct to packet
 func (me *RawPacketStruct) Marshal() []byte {
 	utils.Log.Debug("start to Marshal RawPacketStruct", "raw", me)
-	packet := make([]byte, SinglePkgMaxSize)
+	packet := make([]byte, 0, SinglePkgMaxSize)
 	packet = append(packet, me.Header)
 	utils.Log.Debug("raw", "head", me.Header, "length", len(packet))
 	packet = append(packet, me.Type)
