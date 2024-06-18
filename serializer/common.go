@@ -90,7 +90,10 @@ func (me *RawPacketStruct) Marshal() []byte {
 	utils.Log.Debug("raw", "type", me.Type, "length", len(packet))
 	packet = append(packet, me.ButtonNo)
 	utils.Log.Debug("raw", "buttonNo", me.Type, "length", len(packet))
-	packet = append(packet, me.Value...)
+	if len(me.Value) == 0 {
+		emptyValue := make([]byte, 15)
+		packet = append(packet, emptyValue...)
+	}
 	utils.Log.Debug("raw", "value", me.Type, "length", len(packet))
 	packet = append(packet, me.CheckSum)
 	utils.Log.Debug("raw", "checksum", me.Type, "length", len(packet))
