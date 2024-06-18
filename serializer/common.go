@@ -26,30 +26,30 @@ const (
 	TailSvrToClientBin = 0b10111011
 	//0xDD
 	TailClientToSvrBin = 0b11011101
-	//0xA
-	ActionTypeAllOpenBin = 0b1010
-	//0xB
-	ActionTypeAllCloseBin = 0b1011
-	//0xC
-	ActionTypeQueryBin = 0b1100
-	//0xD
-	ActionTypeSingleOpenBin = 0b1101
-	//0xE
-	ActionTypeSingleCloseBin = 0b1110
+	//0x0A 全开
+	ActionTypeAllOpenBin = 0b00001010
+	//0x0B 全关
+	ActionTypeAllCloseBin = 0b00001011
+	//0x0C 查询状态
+	ActionTypeQueryBin = 0b00001100
+	//0x0D 单开
+	ActionTypeSingleOpenBin = 0b00001101
+	//0x0E 单关
+	ActionTypeSingleCloseBin = 0b00001110
 	//0x1E 向服务器注册端点，是的服务器每7秒向端点报告一次继电器状态
-	ActionTypeRegisteStatusBin = 0b11110
+	ActionTypeRegisteStatusBin = 0b00011110
 	//0x1A 年 年 月 日 时 分 秒 （年由两部分组成，例如2017：14 11）
-	ActionTypeSetDateTimeBin = 0b11010
+	ActionTypeSetDateTimeBin = 0b00011010
 	//0x1B
-	ActionTypeGetDateTimeBin = 0b11011
+	ActionTypeGetDateTimeBin = 0b00011011
 	//0x2b value 3-9分别代表DIO_20到DIO_28这7个IO口的状态，01高电平，02低电平
-	ActionTypeGetIOBin = 0b101011
+	ActionTypeGetIOBin = 0b000101011
 	//0x2d 批量设置继电器状态 3-7 五路继电器，01开，02关
-	ActionTypeBatchSetBin = 0b101101
+	ActionTypeBatchSetBin = 0b00101101
 	//0x3d
-	ActionTypeDelayOpenBin = 0b111101
+	ActionTypeDelayOpenBin = 0b00111101
 	//0x3e
-	ActionTypeDelayCloseBin = 0b111110
+	ActionTypeDelayCloseBin = 0b00111110
 )
 
 // 0        1      2           3                                                             18         19
@@ -112,7 +112,7 @@ func (me *RawPacketStruct) UnMarshal(raw []byte) error {
 	me.CheckSum = raw[18]
 	index += ChecksumSize
 	me.Tail = raw[19]
-	utils.Log.Debug("UnMarshal RawPacketStructdone ", "struct", me)
+	utils.Log.Debug("UnMarshal RawPacketStruct done", "struct", me)
 	return nil
 }
 
